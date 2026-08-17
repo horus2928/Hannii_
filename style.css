@@ -1,50 +1,261 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { 
-    background-color: #0f172a; 
-    display: flex; justify-content: center; align-items: center; 
-    min-height: 100vh; font-family: sans-serif; overflow: hidden; 
+/* ===================================================
+   Reset e Configurações Globais
+   =================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-#abrir-envelope { display: none; }
-.main-container { width: 320px; height: 220px; position: relative; }
-.envelope-wrapper { cursor: pointer; display: block; width: 100%; height: 100%; position: relative; }
-
-/* Envelope */
-.envelope { position: absolute; width: 320px; height: 220px; background: #1e293b; border-radius: 4px; z-index: 3; }
-.aba-topo { position: absolute; top: 0; width: 0; height: 0; border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 110px solid #0f172a; transition: 0.6s; z-index: 5; transform-origin: top; }
-.corpo-envelope { position: absolute; bottom: 0; width: 320px; height: 110px; background: #334155; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; z-index: 3; }
-
-/* Carta */
-.carta { 
-    position: absolute; top: 10px; left: 15px; width: 290px; height: 200px; 
-    background: white; border-radius: 6px; z-index: 2; transition: 0.8s;
-    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-    padding: 15px; text-align: center; overflow: hidden;
+:root {
+  --bg-color: #0f172a;
+  --envelope-base: #1e293b;
+  --envelope-aba: #0f172a;
+  --envelope-corpo: #334155;
+  --card-bg: #ffffff;
+  --text-dark: #1e293b;
+  --text-body: #475569;
+  --text-muted: #94a3b8;
+  --purple-glow: rgba(147, 51, 234, 0.4);
+  --purple-accent: #7c3aed;
+  --btn-whatsapp: #22c55e;
 }
 
-/* Conteúdo da Carta */
-.foto-box img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd; }
-h2 { font-size: 0.95rem; color: #7c3aed; margin-top: 5px; }
-.texto-interno { margin: 5px 0; }
-p { font-size: 0.75rem; color: #475569; line-height: 1.3; }
-
-/* Botão WhatsApp */
-.btn-whatsapp { 
-    background: #22c55e; color: white; text-decoration: none;
-    padding: 8px 20px; border-radius: 5px; font-weight: bold; font-size: 0.8rem;
-    display: inline-block; margin: 5px 0;
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 1.5rem;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  position: relative;
 }
 
-.rodape { font-size: 0.6rem; color: #94a3b8; font-weight: bold; margin-top: 5px; }
+/* ===================================================
+   Estrelas de Fundo (Camadas Cintilantes)
+   =================================================== */
+.stars, .stars2, .stars3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
 
-/* Gengars */
-.gengar { position: absolute; width: 60px; opacity: 0; z-index: 1; transition: 0.7s; pointer-events: none; }
-.gengar img { width: 100%; }
-.gengar-left { left: -25px; top: 40px; }
-.gengar-right { right: -25px; top: 40px; }
+.stars {
+  background-image: 
+    radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #cbd5e1, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 160px 120px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 230px 190px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 290px 80px, #cbd5e1, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 320px 240px, #ffffff, rgba(0,0,0,0));
+  background-size: 350px 350px;
+  animation: piscar 3s ease-in-out infinite alternate;
+}
 
-/* Ação de abrir */
-#abrir-envelope:checked ~ .envelope-wrapper .aba-topo { transform: rotateX(180deg); z-index: 0; }
-#abrir-envelope:checked ~ .envelope-wrapper .carta { transform: translateY(-175px); height: 340px; z-index: 4; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-#abrir-envelope:checked ~ .envelope-wrapper .gengar { opacity: 1; transform: translateY(-145px); }
+.stars2 {
+  background-image: 
+    radial-gradient(1px 1px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 110px 220px, #a855f7, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 180px 10px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 250px 150px, #cbd5e1, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 310px 60px, #ffffff, rgba(0,0,0,0));
+  background-size: 300px 300px;
+  animation: piscar 4.5s ease-in-out infinite alternate 1.5s;
+}
+
+.stars3 {
+  background-image: 
+    radial-gradient(1.5px 1.5px at 70px 90px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 140px 270px, #cbd5e1, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 200px 50px, #c084fc, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 270px 220px, #ffffff, rgba(0,0,0,0));
+  background-size: 250px 250px;
+  animation: piscar 2.5s ease-in-out infinite alternate 0.8s;
+}
+
+@keyframes piscar {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+/* ===================================================
+   Container Principal
+   =================================================== */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+}
+
+.instrucao {
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  color: #cbd5e1;
+  margin-bottom: 2.5rem;
+  animation: flutuar 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes flutuar {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
+#toggle-envelope { display: none; }
+
+/* ===================================================
+   Envelope
+   =================================================== */
+.envelope-wrapper {
+  position: relative;
+  width: 340px;
+  height: 230px;
+  cursor: pointer;
+}
+
+.envelope {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--envelope-base);
+  border-radius: 12px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+}
+
+.aba-superior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-top: 130px solid var(--envelope-aba);
+  transform-origin: top;
+  transition: transform 0.5s ease-in-out, z-index 0.2s 0.25s;
+  z-index: 4;
+}
+
+.aba-inferior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 170px solid var(--envelope-corpo);
+  border-right: 170px solid var(--envelope-corpo);
+  border-bottom: 115px solid var(--envelope-base);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  z-index: 3;
+}
+
+/* ===================================================
+   Efeito: Dois Gengars
+   =================================================== */
+.gengar-efeito {
+  position: absolute;
+  top: 20px;
+  width: 75px;
+  height: 75px;
+  opacity: 0;
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+  z-index: 6;
+  filter: drop-shadow(0 0 10px var(--purple-glow));
+}
+
+.gengar-left { left: -20px; transform: scale(0.3) rotate(-20deg); }
+.gengar-right { right: -20px; transform: scale(0.3) rotate(20deg); }
+
+.gengar-efeito img { width: 100%; height: 100%; object-fit: contain; }
+
+/* ===================================================
+   Conteúdo da Carta
+   =================================================== */
+.carta {
+  position: absolute;
+  top: 30px;
+  left: 15px;
+  width: 310px;
+  height: 190px;
+  opacity: 0;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), height 0.65s ease, opacity 0.3s ease;
+  z-index: 1;
+}
+
+.foto-box img {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+.titulo-convite { color: var(--purple-accent); font-size: 0.92rem; margin-top: 0.15rem; margin-bottom: 0.2rem; }
+.frase-principal { font-size: 0.75rem; color: var(--text-body); line-height: 1.35; margin-bottom: 0.4rem; }
+
+.btn-whatsapp {
+  display: inline-block;
+  background-color: var(--btn-whatsapp);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 18px;
+  border-radius: 20px;
+  margin-bottom: 0.35rem;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-whatsapp:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.45);
+}
+
+.divisor { width: 30px; height: 2px; background-color: #cbd5e1; margin-bottom: 0.25rem; display: inline-block; }
+.rodape-convite { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; }
+
+/* ===================================================
+   Interação (Abertura)
+   =================================================== */
+#toggle-envelope:checked ~ .instrucao { opacity: 0; }
+#toggle-envelope:checked ~ .envelope-wrapper .aba-superior { transform: rotateX(180deg); z-index: 0; }
+#toggle-envelope:checked ~ .envelope-wrapper .carta { 
+  opacity: 1;
+  transform: translateY(-170px); 
+  height: 320px; 
+  z-index: 5; 
+}
+#toggle-envelope:checked ~ .envelope-wrapper .gengar-left { opacity: 1; transform: scale(1) translateY(-150px) rotate(-10deg); }
+#toggle-envelope:checked ~ .envelope-wrapper .gengar-right { opacity: 1; transform: scale(1) translateY(-150px) rotate(10deg); }
+
+/* Mobile */
+@media (max-width: 380px) {
+  .envelope-wrapper { width: 290px; height: 200px; }
+  .carta { width: 265px; height: 170px; top: 25px; }
+  #toggle-envelope:checked ~ .envelope-wrapper .carta { transform: translateY(-155px); height: 310px; }
+}
