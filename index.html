@@ -1,50 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convite Especial</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite Especial</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <main class="main-container">
-        <input type="checkbox" id="abrir-envelope">
+  <!-- Camadas de estrelas cintilantes -->
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+
+  <!-- Áudio de fundo -->
+  <audio id="musica-fundo" src="musica.mp3" preload="auto" loop></audio>
+
+  <main class="main-container">
+    <p class="instrucao">Toque para abrir ✉️</p>
+
+    <!-- Controle que gerencia a abertura do envelope -->
+    <input type="checkbox" id="toggle-envelope">
+    
+    <label for="toggle-envelope" class="envelope-wrapper">
+      <div class="envelope">
         
-        <label for="abrir-envelope" class="envelope-wrapper">
-            
-            <!-- Gengars -->
-            <div class="gengar gengar-left">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar">
-            </div>
-            <div class="gengar gengar-right">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar">
-            </div>
+        <!-- Efeito: Dois Gengars Laterais -->
+        <div class="gengar-efeito gengar-left">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar Esquerda">
+        </div>
+        <div class="gengar-efeito gengar-right">
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" alt="Gengar Direita">
+        </div>
 
-            <!-- Envelope -->
-            <div class="envelope">
-                <div class="aba-topo"></div>
-                <div class="corpo-envelope"></div>
-            </div>
+        <!-- Parte superior do envelope -->
+        <div class="aba-superior"></div>
 
-            <!-- Carta -->
-            <div class="carta">
-                <div class="foto-box">
-                    <img src="foto.jpg" alt="Foto dela">
-                </div>
-                
-                <div class="texto-interno">
-                    <h2>Parabéns!! 🎉</h2>
-                    <p>Você foi convidada para um Date no próximo fim de semana, onde haverá muitas resenhas, comida e até um soninho se quiser... e aí, topa?</p>
-                </div>
+        <!-- Conteúdo da carta -->
+        <div class="carta">
+          <div class="foto-box">
+            <img src="foto.jpg" alt="Foto dela">
+          </div>
 
-                <!-- Botão WhatsApp como link -->
-                <a href="https://wa.me/5573981034375?text=Opa,%20vamos%20sim!%20🥰" target="_blank" class="btn-whatsapp">Topar!</a>
-                
-                <p class="rodape">Feito especialmente pra você</p>
-            </div>
-        </label>
-    </main>
+          <div class="texto-box">
+            <h2 class="titulo-convite">Parabéns!! 🎉</h2>
+            <p class="frase-principal">
+              Você foi convidada para um Date no próximo fim de semana, onde haverá muitas resenhas, comida e até um soninho se quiser... e aí, topa?
+            </p>
+
+            <!-- Botão WhatsApp -->
+            <a href="https://wa.me/5573981034375?text=Opa,%20vamos%20sim!%20%F0%9F%A5%B0" target="_blank" class="btn-whatsapp">Topar!</a>
+
+            <span class="divisor"></span>
+            <p class="rodape-convite">Feito especialmente pra você</p>
+          </div>
+        </div>
+
+        <!-- Parte inferior do envelope -->
+        <div class="aba-inferior"></div>
+      </div>
+    </label>
+  </main>
+
+  <!-- Script: Dispara a música exatamente ao abrir o envelope -->
+  <script>
+    const toggle = document.getElementById('toggle-envelope');
+    const musica = document.getElementById('musica-fundo');
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        musica.play().catch(err => {
+          console.warn("Erro ao reproduzir áudio:", err);
+        });
+      } else {
+        musica.pause();
+        musica.currentTime = 0;
+      }
+    });
+  </script>
 
 </body>
 </html>
