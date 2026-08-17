@@ -17,12 +17,13 @@
   <audio id="musica-fundo" src="musica.mp3" preload="auto" loop></audio>
 
   <main class="main-container">
-    <p class="instrucao">Toque para abrir ✉️</p>
+    <!-- Texto de contagem regressiva e cadeado -->
+    <p class="instrucao" id="contador-texto">🔒 Liberando em 10s...</p>
 
     <!-- Controle que gerencia a abertura do envelope -->
-    <input type="checkbox" id="toggle-envelope">
+    <input type="checkbox" id="toggle-envelope" disabled>
     
-    <label for="toggle-envelope" class="envelope-wrapper">
+    <label for="toggle-envelope" class="envelope-wrapper bloqueado" id="envelope-label">
       <div class="envelope">
         
         <!-- Efeito: Dois Gengars Laterais -->
@@ -62,11 +63,29 @@
     </label>
   </main>
 
-  <!-- Script: Dispara a música exatamente ao abrir o envelope -->
   <script>
     const toggle = document.getElementById('toggle-envelope');
+    const envelopeLabel = document.getElementById('envelope-label');
+    const contadorTexto = document.getElementById('contador-texto');
     const musica = document.getElementById('musica-fundo');
 
+    let tempoRestante = 10;
+
+    // Contagem regressiva de 10 segundos
+    const intervalo = setInterval(() => {
+      tempoRestante--;
+      if (tempoRestante > 0) {
+        contadorTexto.innerText = `🔒 Liberando em ${tempoRestante}s...`;
+      } else {
+        clearInterval(intervalo);
+        // Libera o envelope
+        toggle.disabled = false;
+        envelopeLabel.classList.remove('bloqueado');
+        contadorTexto.innerText = "🔓 Toque para abrir ✉️";
+      }
+    }, 1000);
+
+    // Dispara a música exatamente ao abrir o envelope
     toggle.addEventListener('change', () => {
       if (toggle.checked) {
         musica.play().catch(err => {
