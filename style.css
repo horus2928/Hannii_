@@ -108,6 +108,7 @@ body {
   color: #cbd5e1;
   margin-bottom: 2.5rem;
   animation: flutuar 1.8s ease-in-out infinite alternate;
+  min-height: 1.5rem;
 }
 
 @keyframes flutuar {
@@ -125,6 +126,14 @@ body {
   width: 340px;
   height: 230px;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+/* Bloqueio nos primeiros 10 segundos */
+.envelope-wrapper.bloqueado {
+  pointer-events: none;
+  opacity: 0.85;
+  cursor: not-allowed;
 }
 
 .envelope {
